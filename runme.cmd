@@ -19,6 +19,19 @@ set /a errors=0
 set "failures="
 
 cls
+echo Activating Windows using HWID...
+echo.
+
+powershell.exe -NoProfile -Command "& ([ScriptBlock]::Create((irm 'https://get.activated.win'))) /HWID"
+
+if errorlevel 1 (
+  set /a errors+=1
+  call :RecordFailure "Windows HWID activation command failed"
+) else (
+  echo Windows HWID activation command completed.
+)
+
+cls
 echo Setting configuration files...
 call :CopyFile "%~dp0bin\JPEGView.ini" "%AppData%\JPEGView\JPEGView.ini"
 
